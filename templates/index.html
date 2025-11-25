@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Query Classifier - Flask</title>
+    <style>
+        /* Color Variables */
+        :root {
+            --color-bg: #f9f9f9;
+            --color-card-bg: #ffffff;
+            --color-primary: #1a437a; /* Dark Blue */
+            --color-secondary: #4a86e8; /* Light Blue */
+            --color-green: #4caf50; /* Green */
+            --color-accent: #fb641b; /* Orange/Accent */
+            --color-text: #333;
+            --color-border: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: var(--color-card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 700px;
+            transition: all 0.3s ease-in-out;
+        }
+        h1 {
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--color-primary);
+            font-size: 1.05em;
+        }
+        textarea {
+            width: 97%;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 150px;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        textarea:focus {
+            border-color: var(--color-secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 134, 232, 0.2);
+        }
+        button {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Result Display Styles */
+        .result-box {
+            margin-top: 35px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .result-box h3 {
+            margin-top: 0;
+            font-weight: 700;
+        }
+
+        .success { /* Green for Return/Refund */
+            background-color: #e6f5e9; 
+            color: var(--color-green); 
+            border: 2px solid var(--color-green);
+        }
+        .info { /* Light Blue for Other */
+            background-color: #e8f3ff;
+            color: var(--color-secondary);
+            border: 2px solid var(--color-secondary);
+        }
+        .warning { /* Accent/Error for Warnings */
+            background-color: #fff3e6;
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Flipkart Query Classifier</h1>
+        <p class="subtitle">Intelligently categorize customer support messages.</p>
+        
+        <form method="POST" action="/predict">
+            <label for="customer_query">📝 Enter Customer Support Message:</label>
+            <textarea 
+                id="customer_query" 
+                name="customer_query" 
+                placeholder="Type the customer's query here (e.g., 'My order has not been delivered. I want a full refund.')"
+                required
+            >{{ user_query }}</textarea>
+            
+            <button type="submit">Classify Query</button>
+        </form>
+
+        {% if prediction_label %}
+        <div class="result-box {{ prediction_status }}">
+            <h3>Classification:</h3>
+            <p>{{ prediction_label | safe }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
