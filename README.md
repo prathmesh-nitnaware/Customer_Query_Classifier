@@ -78,6 +78,9 @@ Open your browser and visit:
 
 ### 🧠 Machine Learning Details
 The core classification logic was developed in the included ML_notebook.ipynb.
+
 Model Type: Logistic Regression (Binary Classification)
+
 Feature Extraction: TF-IDF Vectorization
+
 Performance: (Optional – Add metrics such as accuracy, e.g., ~92%)
